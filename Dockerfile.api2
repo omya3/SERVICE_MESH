@@ -1,0 +1,17 @@
+# Use Python base image
+FROM python:3.9-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the application code
+COPY resource.py /app/
+
+# Install dependencies
+RUN pip install flask
+
+# Expose the port for the Flask app
+EXPOSE 5001
+
+# Run the application
+CMD ["python", "resource.py"]

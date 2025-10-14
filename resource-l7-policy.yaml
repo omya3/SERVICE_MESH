@@ -1,0 +1,17 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: service2-l7-policy
+spec:
+  targetRefs:
+  - kind: Service
+    name: service2
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/default/sa/client-sa"]
+    to:
+    - operation:
+        methods: ["GET"]
+        paths: ["/content", "/request-content"]
