@@ -2,35 +2,42 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: service2
+  namespace: mesh-demo
   labels:
-    app: service2
+    app: resource
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: service2
+      app: resource
+      version: v1
   template:
     metadata:
       labels:
-        app: service2
+        app: resource
+        version: v1
     spec:
       containers:
-      - name: service2
-        image: resource_mesh:latest
-        imagePullPolicy: IfNotPresent
+      - name: resource
+        image: resource_mesh:latest   # change if you push to a registry
         ports:
-        - containerPort: 5001
+        - containerPort: 8000
+        env:
+        - name: SERVICE_PORT
+          value: "8000"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: service2
+  namespace: mesh-demo
   labels:
-    app: service2
+    app: resource
 spec:
-  ports:
-  - port: 5001
-    targetPort: 5001
-    protocol: TCP
   selector:
-    app: service2
+    app: resource
+    version: v1
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000

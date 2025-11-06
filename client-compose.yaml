@@ -2,22 +2,45 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: service1
+  namespace: mesh-demo
   labels:
-    app: service1
+    app: client
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: service1
+      app: client
+      version: v1
   template:
     metadata:
       labels:
-        app: service1
+        app: client
+        version: v1
     spec:
       serviceAccountName: client-sa
       containers:
-      - name: service1
-        image: client_mesh:latest
-        imagePullPolicy: IfNotPresent
+      - name: client
+        image: client_mesh:latest     # change if you push to a registry
         ports:
-        - containerPort: 5000
+        - containerPort: 8000
+        env:
+        - name: SERVICE_PORT
+          value: "8000"
+        - name: TARGET_URL
+          value: "http://service2.mesh-demo.svc.cluster.local:8000/echo"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1
+  namespace: mesh-demo
+  labels:
+    app: client
+spec:
+  selector:
+    app: client
+    version: v1
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
