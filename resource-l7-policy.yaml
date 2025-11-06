@@ -10,7 +10,9 @@ spec:
   rules:
   - from:
     - source:
-        principals: ["cluster.local/ns/default/sa/client-sa"]
+        principals:
+          - "cluster.local/ns/default/sa/client-sa"
+          - "cluster.local/ns/default/sa/locust-sa"
     to:
     - operation:
         methods: ["GET"]

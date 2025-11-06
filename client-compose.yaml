@@ -14,7 +14,7 @@ spec:
       labels:
         app: service1
     spec:
-      serviceAccountName: client-sa          # <-- Add this line here
+      serviceAccountName: client-sa
       containers:
       - name: service1
         image: client_mesh:latest
