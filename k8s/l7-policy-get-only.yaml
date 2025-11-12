@@ -1,0 +1,19 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-get-only
+  namespace: mesh-demo
+spec:
+  targetRefs:
+  - kind: Gateway
+    group: gateway.networking.k8s.io
+    name: waypoint
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/mesh-demo/sa/client-sa"]
+    to:
+    - operation:
+        methods: ["GET"]
+        paths: ["/content"]

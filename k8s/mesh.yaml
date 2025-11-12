@@ -20,7 +20,8 @@ spec:
       serviceAccountName: client-sa
       containers:
       - name: service1
-        image: client_mesh:v6
+        image: client_mesh:v7
+        imagePullPolicy: IfNotPresent
         ports: [{ containerPort: 5000 }]
 ---
 apiVersion: v1
@@ -50,6 +51,7 @@ spec:
       containers:
       - name: service2
         image: resource_mesh:v7
+        imagePullPolicy: IfNotPresent
         ports: [{ containerPort: 5001 }]
 ---
 apiVersion: v1

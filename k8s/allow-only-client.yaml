@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: service2-allow-client
+  namespace: mesh-demo
+spec:
+  selector:
+    matchLabels:
+      app: service2
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals:
+        - "spiffe://cluster.local/ns/mesh-demo/sa/client-sa"
